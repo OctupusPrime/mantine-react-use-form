@@ -83,8 +83,9 @@ function App() {
             render={({ field: options }) => (
               <ParticipantsInput
                 {...options}
-                error={errors?.users?.message}
-                errorArr={errors?.users as Array<any>}
+                error={
+                  errors?.users?.length ? errors.users : errors?.users?.message
+                }
               />
             )}
           />

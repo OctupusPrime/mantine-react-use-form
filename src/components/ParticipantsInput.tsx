@@ -38,8 +38,7 @@ function Value({
 }
 
 interface ParticipantsInputProps {
-  error?: string;
-  errorArr?: any;
+  error?: any;
 }
 
 type MergeTypes<A, B> = {
@@ -52,7 +51,7 @@ const ParticipantsInput = forwardRef<
   any,
   MergeTypes<WithoutData, ParticipantsInputProps>
 >((props, ref) => {
-  const { value, onChange, errorArr, error, onBlur, ...other } = props;
+  const { value, onChange, error, onBlur, ...other } = props;
 
   const [searchValue, onSearchChange] = useState("");
 
@@ -70,16 +69,17 @@ const ParticipantsInput = forwardRef<
     onSearchChange("");
   };
 
-  const errMsg = useMemo<string | null>(() => {
-    if (error) return error;
-    if (!errorArr?.length) return null;
+  const errMsg = useMemo<string | null | undefined>(() => {
+    if (error instanceof Array) {
+      if (!error?.length) return null;
 
-    const firstErrIndex = errorArr.findIndex((val: any) => !!val);
-
-    return value?.[firstErrIndex]
-      ? `${value?.[firstErrIndex]} is not valid email`
-      : null;
-  }, [errorArr, error]);
+      const firstErrIndex = error.findIndex((val: any) => !!val);
+      return value?.[firstErrIndex]
+        ? `${value?.[firstErrIndex]} is not valid email`
+        : null;
+    }
+    return error;
+  }, [error]);
 
   return (
     <MultiSelect
@@ -92,7 +92,7 @@ const ParticipantsInput = forwardRef<
       clearable
       valueComponent={(props) => {
         const itemIndex = value?.findIndex((el) => props.value === el) ?? -1;
-        return <Value {...props} isError={errorArr?.[itemIndex]} />;
+        return <Value {...props} isError={error?.[itemIndex]} />;
       }}
       searchValue={searchValue}
       onSearchChange={onSearchChange}
