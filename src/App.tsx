@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import MantineSelect from "./components/MantineSelect";
 import { Tooltip } from "@mantine/core";
 import LocationSelect from "./components/LocationSelect";
+import useDynamicForm from "./hooks/useDynamicForm";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
@@ -72,16 +73,16 @@ const timeSelect = [
 ];
 
 function App() {
-  const [shema, setShema] = useState<z.ZodObject<any>>(FormSchema);
-
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(shema),
-    defaultValues: {
-      title: "wqe",
-      select: 10,
-      users: ["ewq@reqw.ewq"],
-    },
-  });
+  const [form, addFields, removeFields] = useDynamicForm<FormSchemaType>(
+    FormSchema,
+    {
+      defaultValues: {
+        title: "wqe",
+        select: 10,
+        users: ["ewq@reqw.ewq"],
+      },
+    }
+  );
 
   const {
     handleSubmit,
@@ -98,33 +99,30 @@ function App() {
   const handleShemaChange = (type: number) => {
     switch (type) {
       case 5:
-        setShema((old) =>
-          old.merge(
-            z.object({
-              locationValue: z.string().regex(/^.{3,}$/),
-            })
-          )
+        addFields(
+          z.object({
+            locationValue: z.string().regex(/^.{3,}$/),
+          })
         );
-
         return;
       case 6:
-        setShema((old) =>
-          old.merge(
-            z.object({
-              locationValue: z.string().regex(/^.{3,}$/),
-            })
-          )
+        addFields(
+          z.object({
+            locationValue: z.string().regex(/^.{3,}$/),
+          })
         );
         return;
       case 7:
-        setShema((old) =>
-          old.merge(
-            z.object({
-              locationValue: z.string().regex(/^[0-9]+$/),
-            })
-          )
+        addFields(
+          z.object({
+            locationValue: z.string().regex(/^[0-9]+$/),
+          })
         );
         return;
+      default:
+        removeFields({
+          locationValue: true,
+        });
     }
   };
 
