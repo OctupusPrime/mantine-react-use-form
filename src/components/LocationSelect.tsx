@@ -20,22 +20,21 @@ interface LocationSelectProps extends SelectProps {
   item?: ItemProps;
 }
 
-const LocationSelect = (props: LocationSelectProps) => {
+const LocationSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
   const { item, ...other } = props;
 
   return (
     <MantineSelect
       {...other}
+      ref={ref}
       itemComponent={SelectItemComp}
       classNames={{
         input: "pl-[55px] focus-within:pl-[54px]",
         icon: "ml-3",
       }}
-      icon={
-        item ? <div className="h-[30px] w-[30px] bg-black"></div> : undefined
-      }
+      icon={item && <div className="h-[30px] w-[30px] bg-black"></div>}
     />
   );
-};
+});
 
 export default LocationSelect;

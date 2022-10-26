@@ -31,49 +31,135 @@ const FormSchema = z.object({
     label: z.string(),
     value: z.string(),
   }),
+  locationValue: z.string().optional(),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
+//title => label
+//renderId => value
 const locationData = [
   {
     type: 1,
-    label: "tewer",
-    value: "test",
+    label: "Google",
+    value: "google",
   },
   {
     type: 2,
-    label: "tewerewq",
-    value: "testw",
+    label: "Microsoft",
+    value: "microsoft",
+  },
+  {
+    type: 5,
+    label: "Link",
+    value: "link",
+  },
+];
+
+const timeSelect = [
+  {
+    value: "10",
+    label: "Test 1",
+  },
+  {
+    value: "20",
+    label: "Test 2",
+  },
+  {
+    value: "30",
+    label: "Test 3",
   },
 ];
 
 function App() {
+  const [shema, setShema] = useState<z.ZodObject<any>>(FormSchema);
+
   const form = useForm<FormSchemaType>({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(shema),
     defaultValues: {
       title: "wqe",
       select: 10,
       users: ["ewq@reqw.ewq"],
     },
   });
+
   const {
     handleSubmit,
     register,
     control,
-    setValue,
+    watch,
     formState: { errors },
   } = form;
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setValue("location", locationData[0]);
-  //   }, 1000);
-  // }, []);
 
   const submitHandler: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
   };
+
+  const handleShemaChange = (type: number) => {
+    switch (type) {
+      case 5:
+        setShema((old) =>
+          old.merge(
+            z.object({
+              locationValue: z.string().regex(/^.{3,}$/),
+            })
+          )
+        );
+
+        return;
+      case 6:
+        setShema((old) =>
+          old.merge(
+            z.object({
+              locationValue: z.string().regex(/^.{3,}$/),
+            })
+          )
+        );
+        return;
+      case 7:
+        setShema((old) =>
+          old.merge(
+            z.object({
+              locationValue: z.string().regex(/^[0-9]+$/),
+            })
+          )
+        );
+        return;
+    }
+  };
+
+  const getLocationInputProps = (type: number) => {
+    switch (type) {
+      case 5:
+        return {
+          ...register("locationValue"),
+          watchName: "locationValue",
+          placeholder: "Paste link here",
+          label: "Link",
+          error: errors?.locationValue?.message,
+        };
+      case 6:
+        return {
+          ...register("locationValue"),
+          watchName: "locationValue",
+          placeholder: "Type here",
+          label: "Address",
+          error: errors?.locationValue?.message,
+        };
+      case 7:
+        return {
+          ...register("locationValue"),
+          watchName: "locationValue",
+          placeholder: "404-651-4212",
+          label: "Phone Number",
+          error: errors?.locationValue?.message,
+        };
+    }
+
+    return null;
+  };
+
+  const locationVal = watch("location", undefined);
 
   return (
     <div className="max-w-md mx-auto pt-2 px-2">
@@ -110,21 +196,8 @@ function App() {
             control={control}
             render={({ field }) => (
               <MantineSelect
-                data={[
-                  {
-                    value: "10",
-                    label: "Test 1",
-                  },
-                  {
-                    value: "20",
-                    label: "Test 2",
-                  },
-                  {
-                    value: "30",
-                    label: "Test 3",
-                  },
-                ]}
                 {...field}
+                data={timeSelect}
                 value={field.value + ""}
                 onChange={(option) => option && field.onChange(+option)}
                 error={errors?.select?.message}
@@ -149,18 +222,25 @@ function App() {
           <Controller
             name="location"
             control={control}
-            render={({ field: { value, onChange, onBlur } }) => (
+            render={({ field: { value, onChange, ...other } }) => (
               <LocationSelect
+                {...other}
                 item={value}
                 data={locationData}
-                onBlur={onBlur}
                 value={value?.value}
-                onChange={(val) =>
-                  onChange(locationData.find((el) => el.value === val))
-                }
+                onChange={(val) => {
+                  const item = locationData.find((el) => el.value === val);
+
+                  if (!item) return;
+                  handleShemaChange(item.type);
+                  onChange(item);
+                }}
               />
             )}
           />
+          {getLocationInputProps(locationVal?.type) && (
+            <TextAreaField {...getLocationInputProps(locationVal.type)} />
+          )}
 
           <button className="w-full mt-2 bg-blue-500 text-white py-2 rounded-md">
             Submit
