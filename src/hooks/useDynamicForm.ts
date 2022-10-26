@@ -20,7 +20,7 @@ export default function useDynamicForm<
   TContext = any
 >(
   defaultShema: ZodShema,
-  props: UseFormProps<TFieldValues, TContext>
+  props: Omit<UseFormProps<TFieldValues, TContext>, "resolver">
 ): [
   UseFormReturn<TFieldValues, TContext>,
   (newShema: ZodShema) => void,
