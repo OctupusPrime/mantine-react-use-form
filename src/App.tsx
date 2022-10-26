@@ -33,6 +33,8 @@ function App() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "wqe",
+      select: "test1",
+      users: ["ewq@reqw.ewq"],
     },
   });
   const {
