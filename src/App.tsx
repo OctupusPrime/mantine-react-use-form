@@ -15,6 +15,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MantineSelect from "./components/MantineSelect";
+import { Tooltip } from "@mantine/core";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
@@ -22,7 +23,7 @@ const isEmailCheck =
 const FormSchema = z.object({
   title: z.string().min(3),
   description: z.string().optional(),
-  select: z.string(),
+  select: z.number(),
   users: z.array(z.string().regex(isEmailCheck)),
 });
 
@@ -33,7 +34,7 @@ function App() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "wqe",
-      select: "test1",
+      select: 10,
       users: ["ewq@reqw.ewq"],
     },
   });
@@ -52,10 +53,15 @@ function App() {
     <div className="max-w-md mx-auto pt-2 px-2">
       {/* <ParticipantsInput value={emails} onChange={setEmails} /> */}
       <TimeRangeSlider onChange={(range) => console.log("range", range)} />
-      <TimeSlider onChange={(time) => console.log("time", time)} />
+
       {/* <TextField value="" />
       <TextAreaField value="" /> */}
       {/* <MantineSelect data={["ewq", "ewq2"]} /> */}
+      <Tooltip label="Tooltip" color="blue" withArrow>
+        <span>
+          <TimeSlider onChange={(time) => console.log("time", time)} />
+        </span>
+      </Tooltip>
 
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-4 mt-4">
@@ -76,10 +82,25 @@ function App() {
           <Controller
             name="select"
             control={control}
-            render={({ field: options }) => (
+            render={({ field }) => (
               <MantineSelect
-                data={["test1", "test2", "test3"]}
-                {...options}
+                data={[
+                  {
+                    value: "10",
+                    label: "Test 1",
+                  },
+                  {
+                    value: "20",
+                    label: "Test 2",
+                  },
+                  {
+                    value: "30",
+                    label: "Test 3",
+                  },
+                ]}
+                {...field}
+                value={field.value + ""}
+                onChange={(option) => option && field.onChange(+option)}
                 error={errors?.select?.message}
               />
             )}
@@ -88,9 +109,9 @@ function App() {
           <Controller
             name="users"
             control={control}
-            render={({ field: options }) => (
+            render={({ field }) => (
               <ParticipantsInput
-                {...options}
+                {...field}
                 error={
                   errors?.users?.length ? errors.users : errors?.users?.message
                 }
