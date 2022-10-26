@@ -150,17 +150,15 @@ function App() {
             name="location"
             control={control}
             render={({ field: { value, onChange, onBlur } }) => (
-              <div className="relative">
-                <div className="absolute top-1/2 left-[15px] -translate-y-1/2 h-[30px] w-[30px] bg-black z-10"></div>
-                <LocationSelect
-                  data={locationData}
-                  onBlur={onBlur}
-                  value={value?.value}
-                  onChange={(val) =>
-                    onChange(locationData.find((el) => el.value === val))
-                  }
-                />
-              </div>
+              <LocationSelect
+                item={value}
+                data={locationData}
+                onBlur={onBlur}
+                value={value?.value}
+                onChange={(val) =>
+                  onChange(locationData.find((el) => el.value === val))
+                }
+              />
             )}
           />
 

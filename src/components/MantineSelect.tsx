@@ -10,6 +10,7 @@ const MantineSelect = forwardRef<any, SelectProps>((props, ref) => {
       {...other}
       ref={ref}
       classNames={{
+        ...classNames,
         input: clsx(
           "text-base px-4 py-[15px] h-auto rounded-lg placeholder:transition-color",
           error
