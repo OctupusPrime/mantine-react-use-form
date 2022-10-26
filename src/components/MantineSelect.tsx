@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { forwardRef } from "react";
 
 const MantineSelect = forwardRef<any, SelectProps>((props, ref) => {
-  const { error, ...other } = props;
+  const { error, classNames, ...other } = props;
 
   return (
     <Select
@@ -15,7 +15,8 @@ const MantineSelect = forwardRef<any, SelectProps>((props, ref) => {
           error
             ? "border-red-400 focus-within:border-red-400"
             : "border-blue-400 focus-within:border-blue-400",
-          "focus-within:border-2 focus-within:px-[15px] focus-within:py-[14px]"
+          "focus-within:border-2 focus-within:px-[15px] focus-within:py-[14px]",
+          classNames?.input
         ),
       }}
       error={error}

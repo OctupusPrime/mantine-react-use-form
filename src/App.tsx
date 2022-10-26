@@ -16,6 +16,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import MantineSelect from "./components/MantineSelect";
 import { Tooltip } from "@mantine/core";
+import LocationSelect from "./components/LocationSelect";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
@@ -25,9 +26,27 @@ const FormSchema = z.object({
   description: z.string().optional(),
   select: z.number(),
   users: z.array(z.string().regex(isEmailCheck)),
+  location: z.object({
+    type: z.number(),
+    label: z.string(),
+    value: z.string(),
+  }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
+
+const locationData = [
+  {
+    type: 1,
+    label: "tewer",
+    value: "test",
+  },
+  {
+    type: 2,
+    label: "tewerewq",
+    value: "testw",
+  },
+];
 
 function App() {
   const form = useForm<FormSchemaType>({
@@ -42,8 +61,15 @@ function App() {
     handleSubmit,
     register,
     control,
+    setValue,
     formState: { errors },
   } = form;
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setValue("location", locationData[0]);
+  //   }, 1000);
+  // }, []);
 
   const submitHandler: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
@@ -116,6 +142,25 @@ function App() {
                   errors?.users?.length ? errors.users : errors?.users?.message
                 }
               />
+            )}
+          />
+
+          <p>Location</p>
+          <Controller
+            name="location"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <div className="relative">
+                <div className="absolute top-1/2 left-[15px] -translate-y-1/2 h-[30px] w-[30px] bg-black z-10"></div>
+                <LocationSelect
+                  data={locationData}
+                  onBlur={onBlur}
+                  value={value?.value}
+                  onChange={(val) =>
+                    onChange(locationData.find((el) => el.value === val))
+                  }
+                />
+              </div>
             )}
           />
 
