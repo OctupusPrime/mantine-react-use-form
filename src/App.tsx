@@ -66,6 +66,12 @@ function App() {
             {...register("title")}
             error={errors?.title?.message}
           />
+          <TextAreaField
+            label="Description"
+            watchName="description"
+            {...register("description")}
+            error={errors?.description?.message}
+          />
 
           <Controller
             name="select"
