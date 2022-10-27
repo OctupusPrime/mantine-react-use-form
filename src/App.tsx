@@ -163,7 +163,7 @@ function App() {
 
   return (
     <div className="max-w-md mx-auto pt-2 px-2">
-      <CopyTimeMenu />
+      <CopyTimeMenu currentDate={2} onSubmit={(val) => console.log(val)} />
       <TimeRangeSlider onChange={(range) => console.log("range", range)} />
       <Tooltip label="Tooltip" color="blue" withArrow>
         <span>
