@@ -2,6 +2,10 @@ import { type SelectItem, type SelectProps } from "@mantine/core";
 import { forwardRef } from "react";
 import MantineSelect from "./MantineSelect";
 
+interface LocationItem extends SelectItem {
+  type: number;
+}
+
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   type: number;
   label: string;
@@ -17,7 +21,7 @@ const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>(
 );
 
 interface LocationSelectProps extends SelectProps {
-  item?: ItemProps;
+  item?: LocationItem;
 }
 
 const LocationSelect = forwardRef<any, LocationSelectProps>((props, ref) => {

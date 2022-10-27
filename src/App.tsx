@@ -32,7 +32,7 @@ const FormSchema = z.object({
     label: z.string(),
     value: z.string(),
   }),
-  locationValue: z.string().optional(),
+  locationValue: z.any(),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -101,21 +101,27 @@ function App() {
       case 5:
         addFields(
           z.object({
-            locationValue: z.string().regex(/^.{3,}$/),
+            locationValue: z.string().regex(/^.{3,}$/, {
+              message: "Please enter a valid link",
+            }),
           })
         );
         return;
       case 6:
         addFields(
           z.object({
-            locationValue: z.string().regex(/^.{3,}$/),
+            locationValue: z.string().regex(/^.{3,}$/, {
+              message: "Please enter a valid address",
+            }),
           })
         );
         return;
       case 7:
         addFields(
           z.object({
-            locationValue: z.string().regex(/^[0-9]+$/),
+            locationValue: z.string().regex(/^[0-9]+$/, {
+              message: "Please enter a valid phone number",
+            }),
           })
         );
         return;
@@ -130,27 +136,18 @@ function App() {
     switch (type) {
       case 5:
         return {
-          ...register("locationValue"),
-          watchName: "locationValue",
           placeholder: "Paste link here",
           label: "Link",
-          error: errors?.locationValue?.message,
         };
       case 6:
         return {
-          ...register("locationValue"),
-          watchName: "locationValue",
           placeholder: "Type here",
           label: "Address",
-          error: errors?.locationValue?.message,
         };
       case 7:
         return {
-          ...register("locationValue"),
-          watchName: "locationValue",
           placeholder: "404-651-4212",
           label: "Phone Number",
-          error: errors?.locationValue?.message,
         };
     }
 
@@ -237,7 +234,12 @@ function App() {
             )}
           />
           {getLocationInputProps(locationVal?.type) && (
-            <TextAreaField {...getLocationInputProps(locationVal.type)} />
+            <TextAreaField
+              {...register("locationValue")}
+              watchName="locationValue"
+              error={errors?.locationValue?.message as string}
+              {...getLocationInputProps(locationVal.type)}
+            />
           )}
 
           <button className="w-full mt-2 bg-blue-500 text-white py-2 rounded-md">
