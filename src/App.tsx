@@ -163,7 +163,11 @@ function App() {
 
   return (
     <div className="max-w-md mx-auto pt-2 px-2">
-      <CopyTimeMenu currentDate={2} onSubmit={(val) => console.log(val)} />
+      <div className="flex justify-between">
+        <p>ewq</p>
+        <CopyTimeMenu currentDate={2} onSubmit={(val) => console.log(val)} />
+      </div>
+
       <TimeRangeSlider onChange={(range) => console.log("range", range)} />
       <Tooltip label="Tooltip" color="blue" withArrow>
         <span>
