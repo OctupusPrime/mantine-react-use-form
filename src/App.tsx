@@ -12,6 +12,7 @@ import MantineSelect from "./components/MantineSelect";
 import { Tooltip } from "@mantine/core";
 import LocationSelect from "./components/LocationSelect";
 import useDynamicForm from "./hooks/useDynamicForm";
+import CopyTimeMenu from "./components/CopyTimeMenu";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
@@ -162,12 +163,8 @@ function App() {
 
   return (
     <div className="max-w-md mx-auto pt-2 px-2">
-      {/* <ParticipantsInput value={emails} onChange={setEmails} /> */}
+      <CopyTimeMenu />
       <TimeRangeSlider onChange={(range) => console.log("range", range)} />
-
-      {/* <TextField value="" />
-      <TextAreaField value="" /> */}
-      {/* <MantineSelect data={["ewq", "ewq2"]} /> */}
       <Tooltip label="Tooltip" color="blue" withArrow>
         <span>
           <TimeSlider onChange={(time) => console.log("time", time)} />

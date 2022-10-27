@@ -9,10 +9,10 @@ interface TextFieldProps extends TextInputProps {
 }
 
 const TextField = forwardRef<any, TextFieldProps>((props, ref) => {
-  const { watchName, error, onBlur, onFocus, ...other } = props;
+  const { watchName, error, onBlur, onFocus, value, ...other } = props;
   const [focused, setFocused] = useState(false);
 
-  const value = watchName ? useWatch({ name: watchName }) : props.value;
+  const watchValue = watchName ? useWatch({ name: watchName }) : value;
 
   return (
     <TextInput
@@ -20,17 +20,17 @@ const TextField = forwardRef<any, TextFieldProps>((props, ref) => {
       classNames={{
         root: "relative mt-6",
         label: clsx(
-          "absolute z-10 top-[15px] left-3 pointer-events-none transition-all font-medium bg-white px-1.5",
-          value || focused ? "-translate-y-7 text-sm" : "text-base",
+          "absolute z-10 top-[17px] left-3 pointer-events-none transition-all font-medium bg-white px-1.5",
+          watchValue || focused ? "-translate-y-7 text-sm" : "text-base",
           error && "text-red-500"
         ),
         required: clsx(
           "transition-opacity",
-          value || focused ? "opacity-100" : "opacity-0"
+          watchValue || focused ? "opacity-100" : "opacity-0"
         ),
         input: clsx(
           "text-base px-4 py-[15px] h-auto rounded-lg placeholder:transition-color",
-          !(value || focused) && "placeholder:text-transparent",
+          !(watchValue || focused) && "placeholder:text-transparent",
           error
             ? "border-red-400 focus-within:border-red-400"
             : "border-blue-400 focus-within:border-blue-400",
@@ -51,5 +51,7 @@ const TextField = forwardRef<any, TextFieldProps>((props, ref) => {
     />
   );
 });
+
+TextField.displayName = "TextField";
 
 export default TextField;
