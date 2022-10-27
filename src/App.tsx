@@ -55,6 +55,16 @@ const locationData = [
     label: "Link",
     value: "link",
   },
+  {
+    type: 6,
+    label: "Adress",
+    value: "adress",
+  },
+  {
+    type: 7,
+    label: "Phone",
+    value: "phone",
+  },
 ];
 
 const timeSelect = [
@@ -220,6 +230,7 @@ function App() {
             render={({ field: { value, onChange, ...other } }) => (
               <LocationSelect
                 {...other}
+                // isLoading={true}
                 item={value}
                 data={locationData}
                 value={value?.value}

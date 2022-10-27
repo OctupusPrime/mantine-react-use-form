@@ -3,6 +3,8 @@ import { forwardRef } from "react";
 import MantineSelect from "./MantineSelect";
 
 interface LocationItem extends SelectItem {
+  email?: string;
+  location?: string;
   type: number;
 }
 
@@ -14,13 +16,14 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
 const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>(
   ({ type, label, ...others }, ref) => (
     <div ref={ref} {...others}>
-      <p>{type}</p>
+      <div className="h-[30px] w-[30px] bg-black" />
       <p>{label}</p>
     </div>
   )
 );
 
 interface LocationSelectProps extends SelectProps {
+  isLoading?: boolean;
   item?: LocationItem;
 }
 
@@ -31,12 +34,24 @@ const LocationSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
     <MantineSelect
       {...other}
       ref={ref}
+      maxDropdownHeight={400}
       itemComponent={SelectItemComp}
       classNames={{
         input: "pl-[55px] focus-within:pl-[54px]",
         icon: "ml-3",
+        item: "flex items-center gap-2 p-2",
       }}
-      icon={item && <div className="h-[30px] w-[30px] bg-black"></div>}
+      styles={{
+        item: {
+          "&[data-selected]": {
+            "&, &:hover": {
+              backgroundColor: "rgb(191 219 254)",
+              color: "black",
+            },
+          },
+        },
+      }}
+      icon={item && <div className="h-[30px] w-[30px] bg-black" />}
     />
   );
 });

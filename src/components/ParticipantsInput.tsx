@@ -115,10 +115,8 @@ const ParticipantsInput = forwardRef<
       }}
       error={errMsg}
       rightSection={
-        value?.length || searchValue ? (
+        (value?.length || searchValue) && (
           <CloseButton size={28} iconSize={16} onClick={handleClear} />
-        ) : (
-          <></>
         )
       }
       rightSectionWidth={40}

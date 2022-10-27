@@ -1,9 +1,15 @@
-import { Select, type SelectProps } from "@mantine/core";
+import { Select, type SelectProps, Skeleton } from "@mantine/core";
 import clsx from "clsx";
 import { forwardRef } from "react";
 
-const MantineSelect = forwardRef<any, SelectProps>((props, ref) => {
-  const { error, classNames, ...other } = props;
+interface MantineSelectProps extends SelectProps {
+  isLoading?: boolean;
+}
+
+const MantineSelect = forwardRef<any, MantineSelectProps>((props, ref) => {
+  const { error, classNames, isLoading, ...other } = props;
+
+  if (isLoading) return <Skeleton height={56} radius="md" />;
 
   return (
     <Select
