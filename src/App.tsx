@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-
-import ParticipantsInput from "./components/ParticipantsInput";
-import TextAreaField from "./components/TextAreaField";
-import TextField from "./components/TextField";
-import TimeRangeSlider from "./components/TimeRangeSlider";
-import TimeSlider from "./components/TimeSlider";
+import ParticipantsInput from "./components/inputs/ParticipantsInput";
+import TimeRangeSlider from "./components/sliders/TimeRangeSlider";
 
 import { z } from "zod";
 import { type SubmitHandler, FormProvider, Controller } from "react-hook-form";
-import MantineSelect from "./components/MantineSelect";
 import { Tooltip } from "@mantine/core";
-import LocationSelect from "./components/LocationSelect";
+import LocationSelect from "./components/select/LocationSelect";
 import useDynamicForm from "./hooks/useDynamicForm";
-import CopyTimeMenu from "./components/CopyTimeMenu";
+import CopyTimeMenu from "./components/menus/CopyTimeMenu";
+import TimeSlider from "./components/sliders/TimeSlider";
+import TextField from "./components/inputs/TextField";
+import TextAreaField from "./components/inputs/TextAreaField";
+import MantineSelect from "./components/select/MantineSelect";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
