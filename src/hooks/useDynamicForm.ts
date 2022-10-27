@@ -6,14 +6,14 @@ import {
   type UseFormReturn,
   type UseFormProps,
 } from "react-hook-form";
-import { z } from "zod";
+import { type ZodObject } from "zod";
 
 export type FormPropsWithoutResolver = Omit<
   UseFormProps<FieldValues, any>,
   "resolver"
 >;
 
-type ZodShema = z.ZodObject<any>;
+type ZodShema = ZodObject<any>;
 
 export default function useDynamicForm<
   TFieldValues extends FieldValues = FieldValues,

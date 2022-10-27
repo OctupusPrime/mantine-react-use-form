@@ -7,13 +7,7 @@ import TimeRangeSlider from "./components/TimeRangeSlider";
 import TimeSlider from "./components/TimeSlider";
 
 import { z } from "zod";
-import {
-  type SubmitHandler,
-  useForm,
-  FormProvider,
-  Controller,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { type SubmitHandler, FormProvider, Controller } from "react-hook-form";
 import MantineSelect from "./components/MantineSelect";
 import { Tooltip } from "@mantine/core";
 import LocationSelect from "./components/LocationSelect";
