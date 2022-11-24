@@ -11,13 +11,19 @@ interface LocationItem extends SelectItem {
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   type: number;
   label: string;
+  description?: string;
 }
 
 const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>(
-  ({ type, label, ...others }, ref) => (
+  ({ type, label, description, ...others }, ref) => (
     <div ref={ref} {...others}>
-      <div className="h-[30px] w-[30px] bg-black" />
-      <p>{label}</p>
+      <div className="h-[30px] w-[30px] bg-black shrink-0" />
+      <p className="truncate">{label}</p>
+      {description ? (
+        <>
+          <p className="">{description}</p>
+        </>
+      ) : null}
     </div>
   )
 );
@@ -37,7 +43,7 @@ const LocationSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
       maxDropdownHeight={400}
       itemComponent={SelectItemComp}
       classNames={{
-        input: "pl-[55px] focus-within:pl-[54px]",
+        input: "pl-[55px] focus-within:pl-[54px] pr-7 focus-within:pr-7",
         icon: "ml-3",
         item: "flex items-center gap-2 p-2",
       }}

@@ -11,6 +11,9 @@ import TimeSlider from "./components/sliders/TimeSlider";
 import TextField from "./components/inputs/TextField";
 import TextAreaField from "./components/inputs/TextAreaField";
 import MantineSelect from "./components/select/MantineSelect";
+import TimePicker from "./components/select/TimePicker";
+import TeamSelect from "./components/select/TeamSelect";
+import { useMemo } from "react";
 
 const isEmailCheck =
   /^([a-zA-Z0-9]{1,}[\w\.\+\-]*)@([a-zA-Z0-9]{1,}[a-zA-Z0-9\-]*)\.([a-zA-Z]{2,6})$/;
@@ -26,7 +29,16 @@ const FormSchema = z.object({
     value: z.string(),
   }),
   locationValue: z.any(),
+  team: z
+    .object({
+      name: z.string(),
+      members: z.array(z.any()),
+      id: z.number(),
+    })
+    .catchall(z.any()),
 });
+
+FormSchema.shape.title.min(5, { message: "test" });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
@@ -35,8 +47,9 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 const locationData = [
   {
     type: 1,
-    label: "Google",
+    label: "Google ewqe wqewqeqwewq ewq ewqewqeqwe ewqwqewqe wq",
     value: "google",
+    description: "test",
   },
   {
     type: 2,
@@ -75,13 +88,26 @@ const timeSelect = [
   },
 ];
 
+const teamSelectData = [
+  {
+    name: "Finance Team A",
+    members: [1, 2, 3, 4],
+    id: 1,
+  },
+  {
+    name: "Just me",
+    members: [1],
+    id: 3,
+  },
+];
+
 function App() {
   const [form, addFields, removeFields] = useDynamicForm<FormSchemaType>(
     FormSchema,
     {
       defaultValues: {
         title: "wqe",
-        select: 10,
+        // select: 10,
         users: ["ewq@reqw.ewq"],
       },
     }
@@ -98,6 +124,20 @@ function App() {
   const submitHandler: SubmitHandler<FormSchemaType> = (data) => {
     console.log(data);
   };
+
+  const parsedTeams = useMemo(() => {
+    return teamSelectData.map((el: any) => {
+      const { name, id, ...other } = el;
+
+      return {
+        label: name,
+        value: id + "",
+        name,
+        id,
+        ...other,
+      };
+    });
+  }, []);
 
   const handleShemaChange = (type: number) => {
     switch (type) {
@@ -161,10 +201,11 @@ function App() {
 
   return (
     <div className="max-w-md mx-auto pt-2 px-2">
-      <div className="flex justify-between">
-        <p>ewq</p>
+      {/* <div className="flex justify-between">
         <CopyTimeMenu currentDate={2} onSubmit={(val) => console.log(val)} />
       </div>
+
+      <TimePicker /> */}
 
       <TimeRangeSlider onChange={(range) => console.log("range", range)} />
       <Tooltip label="Tooltip" color="blue" withArrow>
@@ -237,6 +278,25 @@ function App() {
               />
             )}
           />
+          <Controller
+            name="team"
+            control={control}
+            render={({ field: { value, onChange, ...other } }) => (
+              <TeamSelect
+                {...other}
+                // isLoading={true}
+                item={value}
+                data={parsedTeams}
+                value={value?.value}
+                onChange={(val) => {
+                  const item = parsedTeams.find((el) => el.value === val);
+
+                  if (!item) return;
+                  onChange(item);
+                }}
+              />
+            )}
+          />
           {getLocationInputProps(locationVal?.type) && (
             <TextAreaField
               {...register("locationValue")}
@@ -251,6 +311,20 @@ function App() {
           </button>
         </form>
       </FormProvider>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut maiores
+        voluptatibus ex, assumenda pariatur repudiandae fuga obcaecati similique
+        quia veniam, quos repellendus. Dolorem totam corporis corrupti ratione
+        illo ipsa, odio inventore? Ab, rem assumenda impedit, aperiam distinctio
+        laudantium similique dicta sit iste reprehenderit in iure libero cumque
+        vitae ea dolore mollitia quisquam eum at. Aliquam vel sint, consectetur
+        maxime inventore odio at! In, maiores! Error, repellendus saepe!
+        Explicabo eveniet, aliquid eos totam doloremque minima quae molestias
+        possimus dolorum ad quia voluptatem recusandae officiis vitae magni
+        voluptates saepe sequi nesciunt accusamus maiores perspiciatis! Iste
+        unde nesciunt obcaecati recusandae ipsam id error?
+      </p>
+      <CopyTimeMenu currentDate={2} onSubmit={(val) => console.log(val)} />
     </div>
   );
 }
