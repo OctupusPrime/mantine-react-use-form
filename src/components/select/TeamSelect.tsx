@@ -2,15 +2,12 @@ import { type SelectProps } from "@mantine/core";
 import { forwardRef } from "react";
 import MantineSelect from "./MantineSelect";
 
-type TeamItem = {
+type Item = {
   name: string;
   members: any[];
 };
 
-interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-  name: string;
-  members: any[];
-}
+interface ItemProps extends React.ComponentPropsWithoutRef<"div">, Item {}
 
 const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
   const { name, members, ...others } = props;
@@ -31,7 +28,7 @@ const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
 
 interface LocationSelectProps extends SelectProps {
   isLoading?: boolean;
-  item?: TeamItem;
+  item?: Item;
 }
 
 const TeamSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
