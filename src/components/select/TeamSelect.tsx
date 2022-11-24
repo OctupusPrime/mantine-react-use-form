@@ -1,11 +1,31 @@
 import { type SelectProps } from "@mantine/core";
-import { Children, forwardRef } from "react";
+import { forwardRef } from "react";
 import MantineSelect from "./MantineSelect";
 
 type TeamItem = {
   name: string;
   members: any[];
 };
+
+interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
+  name: string;
+  members: any[];
+}
+
+const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
+  const { name, members, ...others } = props;
+
+  const membersLgth = members?.length > 1 ? members?.length : null;
+
+  return (
+    <div ref={ref} {...others}>
+      <p className="text-base">{name}</p>
+      {membersLgth ? (
+        <p className="text-sm font-medium">{membersLgth} members</p>
+      ) : null}
+    </div>
+  );
+});
 
 interface LocationSelectProps extends SelectProps {
   isLoading?: boolean;
@@ -23,11 +43,22 @@ const TeamSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
       <MantineSelect
         {...other}
         ref={ref}
+        itemComponent={SelectItemComp}
         classNames={{
           root: "relative",
           input: membersLgth
-            ? "pt-[7px] pb-[23px] focus-within:pt-1.5 focus-within:pb-[22px]"
+            ? "pt-1.5 pb-6 focus-within:pt-[5px] focus-within:pb-[23px]"
             : "",
+        }}
+        styles={{
+          item: {
+            "&[data-selected]": {
+              "&, &:hover": {
+                backgroundColor: "#407BFF",
+                color: "white",
+              },
+            },
+          },
         }}
         inputContainer={(input) => (
           <>

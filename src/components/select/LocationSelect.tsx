@@ -11,19 +11,13 @@ interface LocationItem extends SelectItem {
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   type: number;
   label: string;
-  description?: string;
 }
 
 const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>(
-  ({ type, label, description, ...others }, ref) => (
+  ({ type, label, ...others }, ref) => (
     <div ref={ref} {...others}>
       <div className="h-[30px] w-[30px] bg-black shrink-0" />
       <p className="truncate">{label}</p>
-      {description ? (
-        <>
-          <p className="">{description}</p>
-        </>
-      ) : null}
     </div>
   )
 );
