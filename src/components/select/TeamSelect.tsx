@@ -21,7 +21,9 @@ const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
     <div ref={ref} {...others}>
       <p className="text-base">{name}</p>
       {membersLgth ? (
-        <p className="text-sm font-medium">{membersLgth} members</p>
+        <p className="text-sm font-medium text-gray-400">
+          {membersLgth} members
+        </p>
       ) : null}
     </div>
   );
@@ -55,6 +57,8 @@ const TeamSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
             "&[data-selected]": {
               "&, &:hover": {
                 backgroundColor: "#407BFF",
+              },
+              "&, p": {
                 color: "white",
               },
             },
