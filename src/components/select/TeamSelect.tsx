@@ -1,4 +1,5 @@
 import { type SelectProps } from "@mantine/core";
+import clsx from "clsx";
 import { forwardRef } from "react";
 import MantineSelect from "./MantineSelect";
 
@@ -16,7 +17,7 @@ const SelectItemComp = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
 
   return (
     <div ref={ref} {...others}>
-      <p className="text-base">{name}</p>
+      <p className="text-base font-semibold">{name}</p>
       {membersLgth ? (
         <p className="text-sm font-medium text-gray-400">
           {membersLgth} members
@@ -44,10 +45,11 @@ const TeamSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
         ref={ref}
         itemComponent={SelectItemComp}
         classNames={{
-          root: "relative",
-          input: membersLgth
-            ? "pt-1.5 pb-6 focus-within:pt-[5px] focus-within:pb-[23px]"
-            : "",
+          input: clsx(
+            membersLgth &&
+              "pt-1.5 pb-6 focus-within:pt-[5px] focus-within:pb-[23px] bg-transparent",
+            "font-semibold"
+          ),
         }}
         styles={{
           item: {
@@ -63,12 +65,15 @@ const TeamSelect = forwardRef<any, LocationSelectProps>((props, ref) => {
         }}
         inputContainer={(input) => (
           <>
-            {input}
-            {membersLgth ? (
-              <p className="absolute bottom-[7px] left-4 text-sm text-gray-400 font-medium">
-                {membersLgth} members
-              </p>
-            ) : null}
+            <div className="relative">
+              {input}
+
+              {membersLgth ? (
+                <p className="absolute bottom-[7px] left-4 text-sm text-gray-400 font-medium z-[-1]">
+                  {membersLgth} members
+                </p>
+              ) : null}
+            </div>
           </>
         )}
       />
