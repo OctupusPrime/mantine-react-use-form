@@ -3,7 +3,7 @@ import TimeRangeSlider from "./components/sliders/TimeRangeSlider";
 
 import { z } from "zod";
 import { type SubmitHandler, FormProvider, Controller } from "react-hook-form";
-import { Tooltip } from "@mantine/core";
+import { Switch, Tooltip } from "@mantine/core";
 import LocationSelect from "./components/select/LocationSelect";
 import useDynamicForm from "./hooks/useDynamicForm";
 import CopyTimeMenu from "./components/menus/CopyTimeMenu";
@@ -20,6 +20,10 @@ const isEmailCheck =
 
 const FormSchema = z.object({
   title: z.string().min(3),
+  accept: z.literal(true, {
+    required_error: "You must accept Terms and Conditions.",
+    invalid_type_error: "test",
+  }),
   description: z.string().optional(),
   select: z.number(),
   users: z.array(z.string().regex(isEmailCheck)),
@@ -217,6 +221,23 @@ function App() {
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-4 mt-4">
           <p>React form test</p>
+
+          <Controller
+            name="accept"
+            control={control}
+            render={({ field: { value, onChange, ...others } }) => (
+              <Switch
+                checked={value}
+                onChange={(event) => onChange(event.currentTarget.checked)}
+                {...others}
+                error={
+                  errors?.accept?.message &&
+                  "You must accept Terms and Conditions."
+                }
+              />
+            )}
+          />
+
           <TextField
             label="Title"
             watchName="title"
